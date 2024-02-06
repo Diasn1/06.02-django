@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enclosure List</title>
+</head>
+<body>
+    <h1>Enclosure List</h1>
+    <ul>
+        {% for enclosure in enclosures %}
+            <li><a href="{% url 'enclosure_detail' enclosure.pk %}">{{ enclosure.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'enclosure_create' %}">Add New Enclosure</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ animal.name }} Detail</title>
+</head>
+<body>
+    <h1>{{ animal.name }} Detail</h1>
+    <p><strong>Name:</strong> {{ animal.name }}</p>
+    <p><strong>Species:</strong> {{ animal.species }}</p>
+    <p><strong>Health Status:</strong> {{ animal.health_status }}</p>
+    <a href="{% url 'animal_update' animal.pk %}">Edit</a>
+    <form action="{% url 'animal_delete' animal.pk %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Are you sure you want to delete {{ animal.name }}?')">Delete</button>
+    </form>
+    <a href="{% url 'animal_list' %}">Back to Animal List</a>
+</body>
+</html>
