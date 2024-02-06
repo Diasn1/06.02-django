@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 from .models import Animal, Enclosure
 from .forms import AnimalForm, EnclosureForm
 
@@ -50,11 +51,16 @@ class EnclosureCreateView(CreateView):
     form_class = EnclosureForm
 
     def form_valid(self, form):
-        enclosure = form.save(commit=False)
-        if enclosure.animals.count() > enclosure.capacity:
-            form.add_error(None, "Превышено максимальное количество животных для этого вольера")
-            return self.form_invalid(form)
-        return super().form_valid(form)
+        capacity = form.cleaned_data['capacity']
+        animals = form.cleaned_data['animals']
+        
+        animal_counter = 0
+        for animal in animals:
+            if Animal.objects.get(pk=animal).exists():
+                animal_counter+=1
+            
+        if animal_counter > capacity:
+            return HttpResponse(status=400)
     
     success_url = reverse_lazy('enclosure_list')
     
